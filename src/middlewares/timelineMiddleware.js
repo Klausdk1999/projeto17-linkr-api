@@ -1,4 +1,4 @@
-import { postsRepository } from "../repositories/postsRepository.js";
+import { publishQuerys } from "../repositories/publishRepository";
 
 const haveHashtag = (req, res, next) => {
     const { description } = req.body;
@@ -12,7 +12,7 @@ const haveHashtag = (req, res, next) => {
         if(allHashtags > 0){
             for(let i = 0; i < allHashtags.length; i++){
                 const hashtag = allHashtags[i];
-                const { rows:hashtagDb } = await postsRepository.haveHashtag([hashtag]);
+                const { rows:hashtagDb } = await publishQuerys.haveHashtag([hashtag]);
                 if(hashtagDb.length === 0){
                     const queryString = [
                         hashtag, //name
@@ -20,9 +20,9 @@ const haveHashtag = (req, res, next) => {
                         0,  //view_count
                         1   //last_use
                     ]
-                    await postsRepository.newHashtag([queryString]);
+                    await publishQuerys.newHashtag([queryString]);
                 }else{
-                    await postsRepository.updateMentions([hashtagDb.id, 1]);
+                    await publishQuerys.updateMentions([hashtagDb.id, 1]);
                 };
             }
         }

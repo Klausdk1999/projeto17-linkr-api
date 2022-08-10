@@ -5,10 +5,10 @@ import { signUpSchema } from "../schemas/signUpSchema.js";
 import { signInSchema } from "../schemas/signInSchema.js";
 import { signUp, signIn } from "../controllers/authController.js";
 
-const router = Router();
+const authRouter = Router();
 
-router.post("/signup" ,validateSchema(signUpSchema), signUp);
-router.post("/signin",validateSchema(signInSchema), signIn);
+authRouter.post("/signup" ,validateSchema(signUpSchema), signUp);
+authRouter.post("/signin",validateSchema(signInSchema), signIn);
 
 
-export default router;
+export default authRouter;
