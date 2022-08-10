@@ -20,6 +20,5 @@ async function getPosts() {
 // }
 
 export const postsRepository = {
-	getPosts,
-    insertURL
+	getPosts
 }
