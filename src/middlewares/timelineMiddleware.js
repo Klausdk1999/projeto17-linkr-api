@@ -22,7 +22,7 @@ const haveHashtag = async (req, res, next) => {
             }
         }
         
-        res.locals.allHashtags = allHashtags;
+        res.locals.allHashtagsIds = allHashtags;
         next();
     }catch(error){
         console.log(`[ERRO] In haveHashtag Middlware`);

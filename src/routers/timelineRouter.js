@@ -10,7 +10,7 @@ import publishPost from "../controllers/publishController.js";
 const timelineRouter = Router();
 
 //Publish new post
-timelineRouter.post("/timeline", authenticateToken, validateSchema(publishSchema), haveHashtag)
+timelineRouter.post("/timeline", authenticateToken, validateSchema(publishSchema), haveHashtag, publishPost)
 
 //autenticar get posts
 timelineRouter.get("/posts" , getPosts);
