@@ -12,9 +12,9 @@ const haveHashtag = async(queryString) => {
 const newHashtag = async (queryString) => {
     return connection.query(`
         INSERT INTO hashtags
-        (name, mentions, view_count, last_use)
+        (name, mentions)
         VALUES
-        ($1, $2, $3, $4)`, 
+        ($1, $2)`, 
         queryString
     )
 }

@@ -13,6 +13,7 @@ const authenticateToken = (req,res,next) => {
         res.locals.userId = user.id;
         next();
     })
+    
 }
 
 export default authenticateToken;
