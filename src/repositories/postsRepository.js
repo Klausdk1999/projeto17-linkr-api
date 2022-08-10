@@ -20,8 +20,5 @@ async function getPosts() {
 // }
 
 export const postsRepository = {
-	getPosts,
-    haveHashtag,
-    newHashtag,
-    updateMentions
+	getPosts
 }
