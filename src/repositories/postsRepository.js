@@ -19,6 +19,37 @@ async function getPosts() {
 //     );
 // }
 
+const haveHashtag = async(queryString) => {
+    return connection.query(`
+        SELECT *
+        FROM hashtags
+        WHERE name=$1`,
+        queryString
+    )
+}
+
+const newHashtag = async (queryString) => {
+    return connection.query(`
+        INSERT INTO hashtags
+        (name, mentions, view_count, last_use)
+        VALUES
+        ($1, $2, $3, $4)`, 
+        queryString
+    )
+}
+
+const updateMentions = async(queryString) => {
+    return connection.query(`
+        UPDATE hashtags
+        SET mentions= mentions + $1
+        WHERE id=$2`,
+        queryString
+    )
+}
+
 export const postsRepository = {
-	getPosts
+	getPosts,
+    haveHashtag,
+    newHashtag,
+    updateMentions
 }
