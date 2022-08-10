@@ -20,6 +20,10 @@ async function getPosts() {
 // }
 
 export const postsRepository = {
+<<<<<<< HEAD
 	// getPosts,
     // insertURL
+=======
+	getPosts
+>>>>>>> main
 }

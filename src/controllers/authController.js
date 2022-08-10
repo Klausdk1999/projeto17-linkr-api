@@ -1,5 +1,8 @@
 import bcrypt from 'bcrypt';
 import { authRepository } from "../repositories/authRepository.js";
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export async function signUp(req, res){
     const encryptedPassword = bcrypt.hashSync(req.body.password, 10);
@@ -7,10 +10,14 @@ export async function signUp(req, res){
         ...req.body,
         password: encryptedPassword
     };
+    
 
     try{
-        authRepository.registerUser(userBody);
-        res.sendStatus(201);
+        const findUser = await authRepository.registerUser(userBody);
+        if(findUser){
+            return res.sendStatus(409);
+        }
+        return res.sendStatus(201);
 
     }catch(e){
         return res.sendStatus(500);
@@ -20,5 +27,22 @@ export async function signUp(req, res){
 
 
 export async function signIn(req, res){
+    const user = req.body;
+    const secretKey = process.env.jwt_secret;
+    try{
+        const findUser = await authRepository.findUser(user);
+        if(!findUser || !bcrypt.compareSync(user.password, findUser.password)){
+            return res.status(401).send('Incorrect email or password');
+        }
+        const token = jwt.sign(findUser.id, secretKey);
+        return res.status(200).send({
+            token,
+            username: findUser.username
+        });
+
+    }catch(e){
+        console.log(e)
+        return res.sendStatus(500);
+    }
 
 }
