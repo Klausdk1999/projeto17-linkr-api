@@ -10,6 +10,8 @@ timelineRouter.post("/timeline", )
 
 //autenticar get posts
 timelineRouter.get("/posts" , getPosts);
+timelineRouter.delete("/posts", );
+timelineRouter.put("/posts", )
 timelineRouter.post("/urls" , getUrlData);
 
 //Hashtag Timeline
