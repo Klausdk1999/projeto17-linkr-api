@@ -10,8 +10,8 @@ create TABLE users(
 CREATE TABLE posts (
    id SERIAL PRIMARY KEY,
    author_id INTEGER NOT NULL REFERENCES users(id),
-   description TEXT,
    url TEXT NOT NULL ,
+   description TEXT,
    created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -23,9 +23,15 @@ CREATE TABLE hashtags (
   last_use TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+-- CREATE TABLE hashtags_posts (
+--    id SERIAL PRIMARY KEY,
+--    hashtag_id INTEGER NOT NULL REFERENCES hashtags(id),
+--    post_id INTEGER NOT NULL REFERENCES posts(id)
+-- );
+
 CREATE TABLE hashtags_posts (
    id SERIAL PRIMARY KEY,
-   hashtag_id INTEGER NOT NULL REFERENCES hashtags(id),
+   hashtag_name VARCHAR(255) NOT NULL REFERENCES hashtags(name),
    post_id INTEGER NOT NULL REFERENCES posts(id)
 );
 
@@ -38,7 +44,10 @@ CREATE TABLE likes (
 INSERT INTO users (username,email,password,picture_url) VALUES ('klausdk','klaus@email.com','123','https://i.pinimg.com/originals/17/a2/90/17a29000550b2d5fbe40efb58b2c8459.png'); 
 INSERT INTO posts (author_id,description,url) VALUES ('1','Um link para nosso trello','https://trello.com/b/pQ4glQ7x/projet%C3%A3o-linkr');
 INSERT INTO hashtags (name) VALUES ('Projeto');
-INSERT INTO hashtags_posts (hashtag_id,post_id) VALUES ('1','1');
+--INSERT INTO hashtags_posts (hashtag_id,post_id) VALUES ('1','1');
+INSERT INTO hashtags_posts (hashtag_name,post_id) VALUES ('React','1');
+INSERT INTO hashtags_posts (hashtag_name,post_id) VALUES ('Projeto','1');
+INSERT INTO hashtags_posts (hashtag_name,post_id) VALUES ('Postgres','1');
 INSERT INTO likes (liker_id,post_id) VALUES ('1','1');
 
 SELECT p.description,p.url,p.created_at,u.username,u.picture_url,ha.name FROM ((posts p JOIN users u ON p.author_id=u.id) JOIN hashtags_posts h ON h.post_id=p.id) JOIN hashtags ha ON h.hashtag_id=ha.id  ORDER BY p.created_at DESC LIMIT 20;
