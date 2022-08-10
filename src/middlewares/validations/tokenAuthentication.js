@@ -10,7 +10,7 @@ const authenticateToken = (req,res,next) => {
 
     jwt.verify(token, process.env.jwt_secret, (err,user) => {
         if(err) return res.sendStatus(401);
-        res.locals.userId = user.id;
+        res.locals.userId = user;
         next();
     })
     

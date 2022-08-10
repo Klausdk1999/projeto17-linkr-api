@@ -31,9 +31,9 @@ const updateMentions = async(queryString) => {
 const postPublish = async(queryString) => {
     return connection.query(`
         INSERT INTO posts
-        (author_id, description, url, created_at)
+        (author_id, description, url)
         VALUES
-        ($1, $2, $3, $4)
+        ($1, $2, $3)
         RETURNING id`,
         queryString
     )

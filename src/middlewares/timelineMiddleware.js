@@ -9,20 +9,21 @@ const haveHashtag = async (req, res, next) => {
                 return string.replace("#", "").toLowerCase();
             }
         }).filter( values => typeof values === "string");
+        const allHashtagsIds = []
         if(allHashtags.length > 0){
             for(let i = 0; i < allHashtags.length; i++){
                 const hashtag = allHashtags[i];
                 const { rows:hashtagDb } = await publishQuerys.haveHashtag([hashtag]);
-                console.log(hashtagDb)
                 if(hashtagDb.length === 0){
                     await publishQuerys.newHashtag([hashtag, 1]);
                 }else{
                     await publishQuerys.updateMentions([1,hashtagDb[0].id]);
                 };
+                allHashtagsIds.push(hashtagDb[0].id)
             }
         }
         
-        res.locals.allHashtagsIds = allHashtags;
+        res.locals.allHashtagsIds = allHashtagsIds;
         next();
     }catch(error){
         console.log(`[ERRO] In haveHashtag Middlware`);
