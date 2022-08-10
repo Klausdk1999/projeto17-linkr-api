@@ -13,7 +13,7 @@ export async function getPosts(req, res) {
       return res.status(500).send(error);
 
     }
-} 
+}
 
 export async function getUrlData(req, res) {
   let urldata;
