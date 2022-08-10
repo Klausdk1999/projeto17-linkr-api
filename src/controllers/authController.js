@@ -34,7 +34,7 @@ export async function signIn(req, res){
         if(!findUser || !bcrypt.compareSync(user.password, findUser.password)){
             return res.status(401).send('Incorrect email or password');
         }
-        const token = jwt.sign(user, secretKey);
+        const token = jwt.sign(findUser.id, secretKey);
         return res.status(200).send({
             token,
             username: findUser.username
