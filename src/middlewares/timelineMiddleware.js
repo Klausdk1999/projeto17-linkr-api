@@ -1,33 +1,27 @@
-import { publishQuerys } from "../repositories/publishRepository";
+import { publishQuerys } from "../repositories/publishRepository.js";
 
-const haveHashtag = (req, res, next) => {
+const haveHashtag = async (req, res, next) => {
     const { description } = req.body;
     try{
-        const descriptionArray = description.splice(" ");
+        const descriptionArray = description.split(" ");
         const allHashtags = descriptionArray.map((string) => {
             if(string.includes("#")){
-                return string.split(1, string.length - 1).toLowerCase();
+                return string.replace("#", "").toLowerCase();
             }
-        });
-        if(allHashtags > 0){
+        }).filter( values => typeof values === "string");
+        if(allHashtags.length > 0){
             for(let i = 0; i < allHashtags.length; i++){
                 const hashtag = allHashtags[i];
                 const { rows:hashtagDb } = await publishQuerys.haveHashtag([hashtag]);
                 if(hashtagDb.length === 0){
-                    const queryString = [
-                        hashtag, //name
-                        1,  //mentions
-                        0,  //view_count
-                        1   //last_use
-                    ]
-                    await publishQuerys.newHashtag([queryString]);
+                    await publishQuerys.newHashtag([hashtag, 1]);
                 }else{
-                    await publishQuerys.updateMentions([hashtagDb.id, 1]);
+                    await publishQuerys.updateMentions([1,hashtagDb[0].id]);
                 };
             }
         }
         
-        res.locals.allHashtags = allHashtags;
+        res.locals.allHashtagsNames = allHashtags;
         next();
     }catch(error){
         console.log(`[ERRO] In haveHashtag Middlware`);
@@ -35,4 +29,4 @@ const haveHashtag = (req, res, next) => {
     };
 }
 
-export { haveHashtag };
+export { haveHashtag }
