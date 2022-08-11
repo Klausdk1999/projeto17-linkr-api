@@ -10,7 +10,7 @@ create TABLE users(
 CREATE TABLE posts (
    id SERIAL PRIMARY KEY,
    author_id INTEGER NOT NULL REFERENCES users(id),
-   url TEXT NOT NULL ,
+   url TEXT NOT NULL,
    description TEXT,
    created_at TIMESTAMP DEFAULT NOW()
 );
