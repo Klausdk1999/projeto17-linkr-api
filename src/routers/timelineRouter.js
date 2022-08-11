@@ -17,4 +17,7 @@ timelineRouter.post("/urls" , getUrlData);
 //Hashtag Timeline
 timelineRouter.get("/hashtag/:hashtag", )
 
+//Trending SideBar
+timelineRouter.get("/trendings", authenticateToken, )
+
 export default timelineRouter;
