@@ -12,7 +12,6 @@ async function registerUser(user){
 
 }
 
-
 async function findUser(user){
     const {rows: findUser} = await connection.query(`
         SELECT * FROM users WHERE email = $1
@@ -21,7 +20,6 @@ async function findUser(user){
     return findUser[0];
 
 }
-
 
 export const authRepository = {
     registerUser,
