@@ -1,5 +1,5 @@
 import { postsRepository } from "../repositories/postsRepository.js";
-import { getLinkPreview, getPreviewFromContent } from "link-preview-js";
+import { getLinkPreview } from "link-preview-js";
 
 export async function getPosts(req, res) {
 
