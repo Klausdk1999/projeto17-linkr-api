@@ -1,5 +1,4 @@
-//import { postsRepository } from "../repositories/postsRepository.js";
-import connection from "../setup/database.js";
+import { postsRepository } from "../repositories/postsRepository.js";
 import { getLinkPreview, getPreviewFromContent } from "link-preview-js";
 import { deletePostRepository } from "../repositories/deleteRepository.js";
 
@@ -56,4 +55,4 @@ export async function getUrlData(req, res) {
     return res.status(500).send(error);
 
   }
-} 
+}
