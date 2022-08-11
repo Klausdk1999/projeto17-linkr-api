@@ -42,7 +42,7 @@ const postPublish = async(queryString) => {
 const hashtagsPosts = async(queryString) => {
     return connection.query(`
         INSERT INTO hashtags_posts
-        (hashtag_id, post_id)
+        (hashtag_name, post_id)
         VALUES
         ($1, $2)`,
         queryString

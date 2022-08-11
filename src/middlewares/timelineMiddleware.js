@@ -9,7 +9,6 @@ const haveHashtag = async (req, res, next) => {
                 return string.replace("#", "").toLowerCase();
             }
         }).filter( values => typeof values === "string");
-        const allHashtagsIds = []
         if(allHashtags.length > 0){
             for(let i = 0; i < allHashtags.length; i++){
                 const hashtag = allHashtags[i];
@@ -19,11 +18,10 @@ const haveHashtag = async (req, res, next) => {
                 }else{
                     await publishQuerys.updateMentions([1,hashtagDb[0].id]);
                 };
-                allHashtagsIds.push(hashtagDb[0].id)
             }
         }
         
-        res.locals.allHashtagsIds = allHashtagsIds;
+        res.locals.allHashtagsNames = allHashtags;
         next();
     }catch(error){
         console.log(`[ERRO] In haveHashtag Middlware`);
