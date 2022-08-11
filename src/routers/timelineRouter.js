@@ -1,6 +1,7 @@
 import { Router } from "express";
 import authenticateToken from "../middlewares/validations/tokenAuthentication.js";
 import { getPosts,getUrlData } from "../controllers/postsController.js";
+import getTrendings from "../controllers/trendingController.js";
 
 
 const timelineRouter = Router();
@@ -16,5 +17,8 @@ timelineRouter.post("/urls" , getUrlData);
 
 //Hashtag Timeline
 timelineRouter.get("/hashtag/:hashtag", )
+
+//Trending SideBar
+timelineRouter.get("/trendings", authenticateToken, getTrendings);
 
 export default timelineRouter;
