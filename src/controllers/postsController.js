@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 import { postsRepository } from "../repositories/postsRepository.js";
-import { getLinkPreview } from "link-preview-js";
-=======
-//import { postsRepository } from "../repositories/postsRepository.js";
-import connection from "../setup/database.js";
 import { getLinkPreview, getPreviewFromContent } from "link-preview-js";
 import { deletePostRepository } from "../repositories/deleteRepository.js";
->>>>>>> 73fb9f28cc5ba35d806ba54b77a01c133ab47747
 
 export async function getPosts(req, res) {
   try {
