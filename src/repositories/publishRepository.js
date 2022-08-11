@@ -12,9 +12,9 @@ const haveHashtag = async(queryString) => {
 const newHashtag = async (queryString) => {
     return connection.query(`
         INSERT INTO hashtags
-        (name, mentions, view_count, last_use)
+        (name, mentions)
         VALUES
-        ($1, $2, $3, $4)`, 
+        ($1, $2)`, 
         queryString
     )
 }
@@ -31,9 +31,9 @@ const updateMentions = async(queryString) => {
 const postPublish = async(queryString) => {
     return connection.query(`
         INSERT INTO posts
-        (author_id, description, url, created_at)
+        (author_id, description, url)
         VALUES
-        ($1, $2, $3, $4)
+        ($1, $2, $3)
         RETURNING id`,
         queryString
     )
@@ -42,7 +42,7 @@ const postPublish = async(queryString) => {
 const hashtagsPosts = async(queryString) => {
     return connection.query(`
         INSERT INTO hashtags_posts
-        (hashtag_id, post_id)
+        (hashtag_name, post_id)
         VALUES
         ($1, $2)`,
         queryString
