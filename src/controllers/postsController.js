@@ -55,4 +55,4 @@ export async function getUrlData(req, res) {
     return res.status(500).send(error);
 
   }
-} 
+}
