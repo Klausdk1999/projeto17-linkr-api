@@ -3,14 +3,14 @@ import { deletePost, getPosts } from "../controllers/postsController.js";
 import authenticateToken from "../middlewares/validations/tokenAuthentication.js";
 //import validateSchema from "../middlewares/validations/schemaValidation.js"; 
 
-const router = Router();
+const postRouter = Router();
 
 //autenticar get posts
-router.get("/posts" , getPosts);
+//router.get("/posts" , getPosts);
 
 //router.get("/posts" ,validateSchema(signUpSchema), getPosts);
 //router.post("/posts",validateSchema(signInSchema), createPost);
 
-router.delete("/delete-post/:id", deletePost )
+postRouter.delete("/delete-post/:id", authenticateToken ,deletePost )
 
-export default router;
+export default postRouter;

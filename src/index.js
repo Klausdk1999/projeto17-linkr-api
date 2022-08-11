@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import router from "./routers/router.js";
+import routerPost from "./routes/postsRouter.js";
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ app.use(cors());
 
 //app.use(userRouter);
 //app.use(urlRouter);
-app.use(authRouter);
+
 app.use(router)
 
 

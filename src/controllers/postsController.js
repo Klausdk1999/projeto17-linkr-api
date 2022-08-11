@@ -1,6 +1,7 @@
-import { postsRepository } from "../repositories/postsRepository.js";
+//import { postsRepository } from "../repositories/postsRepository.js";
 import connection from "../setup/database.js";
 import { getLinkPreview, getPreviewFromContent } from "link-preview-js";
+import { deletePostRepository } from "../repositories/deleteRepository.js";
 
 export async function getPosts(req, res) {
   try {
@@ -13,28 +14,23 @@ export async function getPosts(req, res) {
 }
 
 export async function deletePost(req, res) {
-  //const userId = res.locals.userId; //verificar o essa variavel recebe
+  const userId = res.locals.userId; 
   const { id } = req.params;
 
   try {
-    //verificar se existe um post com esse id(404)
-    const verifyPost = await connection.query(`SELECT * FROM posts WHERE id = $1`, [
-      id,
-    ]);
+    const verifyPost = await deletePostRepository.findPost(id)
     if (verifyPost.rowCount === 0) {
       return res.sendStatus(404);
     }
-    //se existir, verificar se o userId é igual ao author_id (401)
-    // if (verifyPost.rows[0].author_id !== userId) {
-    //   return res.sendStatus(401);
-    // }
-    //por fim deletar o post(204)
-    await connection.query(`DELETE FROM posts WHERE author_id = $1 AND id = $2`, [
-      userId,
-      id,
-    ]);
+   
+    if ((verifyPost.rows[0].author_id) !== userId) {
+      return res.sendStatus(401);
+    }
+   await deletePostRepository.deletePost(id, userId)
     //get em posts e eenviar 
-    res.sendStatus(204)
+   const posts = await deletePostRepository.returnPosts()
+    res.status(204).send(posts)
+    
   } catch (error) {
     console.log(error)
     return res.status(500).send(error);

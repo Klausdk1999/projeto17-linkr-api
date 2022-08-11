@@ -20,6 +20,7 @@ export async function signUp(req, res){
         return res.sendStatus(201);
 
     }catch(e){
+        console.log(e)
         return res.sendStatus(500);
     }
 
