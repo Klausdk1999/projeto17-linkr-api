@@ -2,6 +2,7 @@ import connection from "../setup/database.js";
 
 
 async function findPost(id){
+  
    const verifyPost = await connection.query(`SELECT * FROM posts WHERE id = $1`, [
         id,
       ]);

@@ -11,30 +11,31 @@ export async function getPosts(req, res) {
   } catch (error) {
     return res.status(500).send(error);
   }
-}
+} 
 
 export async function deletePost(req, res) {
   const userId = res.locals.userId; 
-  const { id } = req.params;
+  let { id } = req.params;
 
-  try {
+  // try {
     const verifyPost = await deletePostRepository.findPost(id)
     if (verifyPost.rowCount === 0) {
       return res.sendStatus(404);
     }
    
     if ((verifyPost.rows[0].author_id) !== userId) {
-      return res.sendStatus(401);
+      return  res.status(401)
     }
    await deletePostRepository.deletePost(id, userId)
     //get em posts e eenviar 
-   const posts = await deletePostRepository.returnPosts()
-    res.status(204).send(posts)
+    const posts = await deletePostRepository.returnPosts()
+    res.sendStatus(204)
+    // res.stastus(204).send(posts)
     
-  } catch (error) {
-    console.log(error)
-    return res.status(500).send(error);
-  }
+  // } catch (error) {
+  //   console.log(error)
+  //   return res.status(500).send(error);
+  // }
 }
 
 

@@ -9,8 +9,11 @@ const authenticateToken = (req,res,next) => {
     if(token === null) return res.sendStatus(401);
 
     jwt.verify(token, process.env.jwt_secret, (err,user) => {
-        if(err) return res.sendStatus(401);
-        res.locals.userId = parseInt(user) ;
+
+        if(err) return
+        console.log(user)
+         res.sendStatus(401);
+        res.locals.userId = user.id ;
         next();
     })
     
