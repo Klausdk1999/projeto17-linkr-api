@@ -12,6 +12,20 @@ export async function getPosts(req, res) {
   }
 }
 
+
+export async function getUserPosts(req, res){
+  const userId = req.params.id;
+  try{
+    const posts = await postsRepository.getPosts(userId);
+
+    return res.status(201).send(posts.rows);
+  }catch(e){
+    return res.status(500).send(e);
+  }
+}
+
+
+
 export async function deletePost(req, res) {
   const userId = res.locals.userId; 
   const { id } = req.params;
