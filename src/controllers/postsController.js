@@ -16,26 +16,21 @@ export async function getPosts(req, res) {
 export async function deletePost(req, res) {
   const userId = res.locals.userId; 
   let { id } = req.params;
-
-  // try {
-    const verifyPost = await deletePostRepository.findPost(id)
-    if (verifyPost.rowCount === 0) {
+  try {
+    const { rows:verifyPost } = await deletePostRepository.findPost(id);
+    console.log(verifyPost[0])
+    if (verifyPost.length === 0) {
       return res.sendStatus(404);
     }
-   
-    if ((verifyPost.rows[0].author_id) !== userId) {
-      return  res.status(401)
-    }
-   await deletePostRepository.deletePost(id, userId)
-    //get em posts e eenviar 
-    const posts = await deletePostRepository.returnPosts()
+    if(verifyPost[0].author_id !== Number(userId)) return res.sendStatus(401);
+    await deletePostRepository.deleteHashtag_Posts([id])
+    await deletePostRepository.deletePost(id, userId)
     res.sendStatus(204)
-    // res.stastus(204).send(posts)
     
-  // } catch (error) {
-  //   console.log(error)
-  //   return res.status(500).send(error);
-  // }
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send(error);
+  }
 }
 
 

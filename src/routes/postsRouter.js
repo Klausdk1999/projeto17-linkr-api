@@ -11,6 +11,6 @@ const postRouter = Router();
 //router.get("/posts" ,validateSchema(signUpSchema), getPosts);
 //router.post("/posts",validateSchema(signInSchema), createPost);
 
-postRouter.delete("/delete-post/:id", authenticateToken ,deletePost )
+postRouter.delete("/delete-post/:id", authenticateToken, deletePost)
 
 export default postRouter;

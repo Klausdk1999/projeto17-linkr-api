@@ -11,7 +11,9 @@ async function findPost(id){
 
 async function deletePost(id, userId){
 
-    const postDelete =  await connection.query(`DELETE FROM posts WHERE author_id = $1 AND id = $2`, [
+    const postDelete =  await connection.query(`
+    DELETE FROM posts
+    WHERE author_id =$1 AND id = $2`, [
         userId,
         id,
       ]);
@@ -23,9 +25,16 @@ async function returnPosts(){
     return posts
 }
 
+const deleteHashtag_Posts = async (queryParams) => {
+  const query = await connection.query(`
+    DELETE FROM hashtags_posts WHERE post_id = $1`, queryParams);
+  return query
+}
+
 
 export const deletePostRepository = {
  findPost,
  deletePost,
- returnPosts
+ returnPosts,
+ deleteHashtag_Posts
 }
