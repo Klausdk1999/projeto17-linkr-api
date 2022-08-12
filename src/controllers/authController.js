@@ -38,6 +38,7 @@ export async function signIn(req, res){
         const token = jwt.sign(findUser.id, secretKey);
         return res.status(200).send({
             token,
+            id: findUser.id,
             username: findUser.username,
             pictureUrl: findUser.picture_url
         });

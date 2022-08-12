@@ -19,7 +19,26 @@ async function getPosts(userId) {
 }
 
 
+async function favoritePost(postId, userId){
+    return connection.query(`INSERT INTO likes (liker_id, post_id) VALUES ($1, $2)`, [userId, postId]);
+}
+
+async function removeFavorite(postId, userId){
+    return connection.query(`DELETE FROM likes WHERE liker_id = $1 AND post_id = $2`, [userId, postId]);
+}
+
+async function getFavorites(postId, userId){
+    const {rows: favoriteQuantity} = await connection.query(`select count(*) as quantity from likes where post_id = $1`, [postId]);
+    //const {rows: userFavorite} = await connection.query(`select * from likes where post_id = $1 and liker_id = $2`, [postId, userId]);
+    //console.log(userFavorite);
+    return favoriteQuantity[0].quantity;
+}
+
+
 export const postsRepository = {
-    getPosts
+    getPosts,
+    favoritePost,
+    getFavorites,
+    removeFavorite
 }
 

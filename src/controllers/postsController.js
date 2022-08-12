@@ -69,3 +69,43 @@ export async function getUrlData(req, res) {
 
   }
 }
+
+
+export async function favoritePost(req, res){
+  const {postId, userId} = req.body;
+  try{
+    postsRepository.favoritePost(postId, userId);
+    return res.sendStatus(200);
+
+  }catch(e){
+    return res.sendStatus(500);
+  }
+
+}
+
+
+export async function removeFavorite(req, res){
+  const postId = req.params.postId;
+  const userId = req.params.userId;
+  try{
+    postsRepository.removeFavorite(postId, userId);
+    return res.sendStatus(200);
+
+  }catch(e){
+    return res.sendStatus(500);
+  }
+}
+
+export async function getFavorites(req, res){
+  const postId = req.params.id;
+  
+  try{
+    const favoriteQuantity = await postsRepository.getFavorites(postId);
+   //console.log(favoriteQuantity);
+   res.status(200).send(favoriteQuantity);
+
+  }catch(e){
+    return res.sendStatus(500);
+  }
+
+}

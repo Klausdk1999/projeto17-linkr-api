@@ -4,6 +4,7 @@ const publishPost = async (req,res) => {
     const { userId } = res.locals;
     const { url, description } = req.body;
     const { allHashtagsNames } = res.locals;
+
     try{
       const {rows:postId} = await publishQuerys.postPublish([userId, description, url]);
       if(allHashtagsNames.length > 0){
