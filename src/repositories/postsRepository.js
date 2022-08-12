@@ -18,8 +18,6 @@ async function getPosts() {
 //         `INSERT INTO urls ("user_id", "url", "short_url", "view_count") VALUES ($1, $2, $3, $4);`, [id, url, shortUrl, 0]
 //     );
 // }
-
 export const postsRepository = {
     getPosts
 }
-
