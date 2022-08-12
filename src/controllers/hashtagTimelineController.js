@@ -1,11 +1,12 @@
 import { postsRepository } from "../repositories/postsRepository.js";
+import { getLinkPreview } from "link-preview-js";
 
 const getHashtagPosts = async (req,res) => {
     const { hashtag } = req.params;
     try{
         const { rows: haveHashtag } = await postsRepository.haveHashtag([hashtag]);
         if(haveHashtag.length === 0) return res.sendStatus(404);
-    
+
         const { rows: hashtagPosts } = await postsRepository.getHashtagPosts([hashtag]);
         if(hashtagPosts.length === 0) return res.sendStatus(204);
 

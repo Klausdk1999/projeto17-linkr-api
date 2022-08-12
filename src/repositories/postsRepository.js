@@ -19,31 +19,25 @@ const haveHashtag = async (queryString) => {
 
 const getHashtagPosts = async (queryString) => {
     return connection.query(`
-        SELECT p.id as post_id, p.description, p.url, p.created_at,
-        (
-            SELECT(
-                ARRAY_AGG(
-                    jsonb_build_object(
-                        'id', l.id,
-                        'liker_username', u.username
-                    )
+        SELECT p.id, p.description, p.url, p.created_at,
+        (SELECT
+            ARRAY_AGG(
+                jsonb_build_object(
+                    'id', l.id,
+                    'liker_username', u.username
                 )
             )
             FROM likes l
             JOIN users u
             ON l."liker_id" = u.id
             WHERE l."post_id" = p.id
-        ) as likes
-        FROM hashtags_posts h
-        JOIN posts p
-        ON h.post_id = p.id
-        JOIN likes l
-        ON l."post_id" = p.id
+            )as likes
+        FROM posts p
+        JOIN hashtags_posts h
+        ON p.id = h.post_id
         WHERE h.hashtag_name=$1
-        ORDER BY p.created_at DESC
-        LIMIT 20
-        `,
-        queryString
+        ORDER BY p.id DESC
+        LIMIT 20`, queryString
     )
 }
 
