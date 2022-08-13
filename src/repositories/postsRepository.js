@@ -19,7 +19,11 @@ async function getPosts(userId) {
 }
 
 
+
+
+
 export const postsRepository = {
-    getPosts
+    getPosts,
+
 }
 
