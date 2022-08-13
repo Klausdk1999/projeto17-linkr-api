@@ -6,16 +6,16 @@ import validateSchema from "../middlewares/validations/schemaValidation.js"
 import publishSchema from "../schemas/publishSchema.js"
 import { haveHashtag } from "../middlewares/timelineMiddleware.js"
 import publishPost from "../controllers/publishController.js";
-
+import { searchUser } from "../controllers/searchController.js";
 
 const timelineRouter = Router();
 
 //Publish new post
 timelineRouter.post("/timeline", authenticateToken, validateSchema(publishSchema), haveHashtag, publishPost)
 
+timelineRouter.get("/search/:input" , searchUser); /////////////// validateSchema
 
-//autenticar get posts
-timelineRouter.get("/posts" , getPosts);
+timelineRouter.get("/posts" , authenticateToken, getPosts);
 timelineRouter.get("/posts/favorite/:postId/:userId", getFavorites);
 
 timelineRouter.post("/posts/favorite", authenticateToken , favoritePost);
