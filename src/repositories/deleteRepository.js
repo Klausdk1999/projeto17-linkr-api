@@ -1,6 +1,5 @@
 import connection from "../setup/database.js";
 
-
 async function findPost(id){
    const verifyPost = await connection.query(`SELECT * FROM posts WHERE id = $1`, [
         id,
@@ -17,14 +16,8 @@ async function deletePost(id, userId){
       return postDelete
 }
 
-async function returnPosts(){
-    const {rows: posts} = await connection.query(`SELECT * FROM posts`) 
-    return posts
-}
-
 
 export const deletePostRepository = {
  findPost,
- deletePost,
- returnPosts
+ deletePost
 }

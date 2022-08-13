@@ -58,4 +58,3 @@ export const postsRepository = {
     haveHashtag,
     getHashtagPosts
 }
-
