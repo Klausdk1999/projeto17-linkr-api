@@ -14,7 +14,7 @@ const timelineRouter = Router();
 //Publish new post
 timelineRouter.post("/timeline", authenticateToken, validateSchema(publishSchema), haveHashtag, publishPost)
 
-timelineRouter.get("/search/:input" , searchUser); /////////////// validateSchema
+timelineRouter.get("/search/:input" , authenticateToken, searchUser); /////////////// validateSchema
 
 timelineRouter.get("/posts" , authenticateToken, getPosts);
 timelineRouter.get("/posts/favorite/:postId/:userId", getFavorites);
