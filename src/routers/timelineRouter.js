@@ -16,7 +16,7 @@ timelineRouter.post("/timeline", authenticateToken, validateSchema(publishSchema
 
 //autenticar get posts
 timelineRouter.get("/posts" , getPosts);
-timelineRouter.get("/posts/favorite/:id", getFavorites);
+timelineRouter.get("/posts/favorite/:postId/:userId", getFavorites);
 
 timelineRouter.post("/posts/favorite", authenticateToken , favoritePost);
 timelineRouter.delete("/posts/favorite/:postId/:userId", authenticateToken , removeFavorite);
