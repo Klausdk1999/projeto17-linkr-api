@@ -6,6 +6,7 @@ import validateSchema from "../middlewares/validations/schemaValidation.js"
 import publishSchema from "../schemas/publishSchema.js"
 import { haveHashtag } from "../middlewares/timelineMiddleware.js"
 import publishPost from "../controllers/publishController.js";
+import { getHashtagPosts } from "../controllers/hashtagTimelineController.js";
 
 
 const timelineRouter = Router();
@@ -30,7 +31,7 @@ timelineRouter.put("/posts", )
 timelineRouter.post("/urls" , getUrlData);
 
 //Hashtag Timeline
-timelineRouter.get("/hashtag/:hashtag", )
+timelineRouter.get("/hashtag/:hashtag", authenticateToken, getHashtagPosts)
 
 //Trending SideBar
 timelineRouter.get("/trendings", authenticateToken, getTrendings);

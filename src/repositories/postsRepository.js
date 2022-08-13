@@ -19,11 +19,42 @@ async function getPosts(userId) {
 }
 
 
+const haveHashtag = async (queryString) => {
+    return connection.query(`SELECT * FROM hashtags WHERE name=$1`, queryString)
+}
 
+const getHashtagPosts = async (queryString) => {
+    return connection.query(`
+        SELECT p.id, p.description, p.url, p.created_at,
+        (SELECT
+            ARRAY_AGG(
+                jsonb_build_object(
+                    'id', l.id,
+                    'liker_username', u.username
+                )
+            )
+            FROM likes l
+            JOIN users u
+            ON l."liker_id" = u.id
+            WHERE l."post_id" = p.id
+            )as likes
+        FROM posts p
+        JOIN hashtags_posts h
+        ON p.id = h.post_id
+        WHERE h.hashtag_name=$1
+        ORDER BY p.id DESC
+        LIMIT 20`, queryString
+    )
+}
 
+// async function getPosts(id,url,shortUrl) {
+// 	return connection.quqery(
+//         `INSERT INTO urls ("user_id", "url", "short_url", "view_count") VALUES ($1, $2, $3, $4);`, [id, url, shortUrl, 0]
+//     );
+// }
 
 export const postsRepository = {
     getPosts,
-
+    haveHashtag,
+    getHashtagPosts
 }
-
