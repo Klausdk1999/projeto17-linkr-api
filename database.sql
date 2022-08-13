@@ -37,7 +37,7 @@ CREATE TABLE hashtags_posts (
 
 CREATE TABLE previews_posts (
    id SERIAL PRIMARY KEY,
-   preview_id VARCHAR(255) NOT NULL REFERENCES hashtags(name),
+   preview_id INTEGER NOT NULL REFERENCES previews(id),
    post_id INTEGER NOT NULL REFERENCES posts(id)
 );
 

@@ -49,10 +49,33 @@ const hashtagsPosts = async(queryString) => {
     )
 }
 
+const postPreview = async(queryString) => {
+    return connection.query(`
+        INSERT INTO previews
+        (title, url, description, favicon)
+        VALUES
+        ($1, $2, $3, $4)
+        RETURNING id`,
+        queryString
+    )
+}
+
+const postPreviewPosts = async(queryString) => {
+    return connection.query(`
+    INSERT INTO previews_posts
+    (preview_id, post_id)
+    VALUES
+    ($1, $2)
+    `,
+    queryString)
+}
+
 export const publishQuerys = {
     haveHashtag,
     newHashtag,
     updateMentions,
     postPublish,
-    hashtagsPosts
+    hashtagsPosts,
+    postPreview,
+    postPreviewPosts
 };
