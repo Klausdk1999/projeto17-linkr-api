@@ -9,6 +9,7 @@ export async function getPosts(req, res) {
 
     return res.status(201).send(posts.rows);
   } catch (error) {
+    console.log(`[ERRO] In getPosts Controller`);
     return res.status(500).send(error);
   }
 }
@@ -21,6 +22,7 @@ export async function getUserPosts(req, res){
 
     return res.status(201).send(posts.rows);
   }catch(e){
+    console.log(`[ERRO] In getUserPosts Controller`);
     return res.status(500).send(e);
   }
 }
@@ -46,7 +48,7 @@ export async function deletePost(req, res) {
     res.status(204).send(posts)
     
   } catch (error) {
-    console.log(error)
+    console.log(`[ERRO] In deletePost Controller`);
     return res.status(500).send(error);
   }
 }
