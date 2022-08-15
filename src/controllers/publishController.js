@@ -6,8 +6,9 @@ const publishPost = async (req, res) => {
   const { url, description } = req.body;
   const { allHashtagsNames } = res.locals;
   let urlPreview;
-  try {
+  // try {
     await getLinkPreview(url).then((data) => {
+
       return urlPreview = [
         data.title,
         data.url,
@@ -26,10 +27,10 @@ const publishPost = async (req, res) => {
       }
     }
     res.sendStatus(201);
-  } catch (error) {
-    console.log(`[ERRO] In publishPost controller`);
-    return res.status(500).send(error);
-  }
+  // } catch (error) {
+  //   console.log(`[ERRO] In publishPost controller`);
+  //   return res.status(500).send(error);
+  // }
 };
 
 export default publishPost;
