@@ -14,6 +14,17 @@ async function getFavorites(postId){
     return favoriteQuantity[0].quantity
 }
 
+
+async function getLikers(postId){
+    const {rows: likers} = await connection.query(`
+    select u.id as liker_id, u.username from users u 
+    join likes l
+    on l.liker_id = u.id
+    where l.post_id = $1`, [postId]);
+    console.log(likers);
+    return likers;
+}
+
 async function checkIsFavorite(userId, postId){
    const {rows: userFavorite} = await connection.query(`select * from likes where post_id = $1 and liker_id = $2`, [postId, userId]);    
     return userFavorite[0];
@@ -25,5 +36,6 @@ export const favoriteRepository = {
     favoritePost,
     getFavorites,
     removeFavorite,
-    checkIsFavorite
+    checkIsFavorite,
+    getLikers
 }
