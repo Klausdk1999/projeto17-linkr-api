@@ -35,18 +35,18 @@ CREATE TABLE hashtags_posts (
    post_id INTEGER NOT NULL REFERENCES posts(id)
 );
 
-CREATE TABLE previews_posts (
-   id SERIAL PRIMARY KEY,
-   preview_id VARCHAR(255) NOT NULL REFERENCES hashtags(name),
-   post_id INTEGER NOT NULL REFERENCES posts(id)
-);
-
 CREATE TABLE previews(
    id SERIAL PRIMARY KEY,
    title VARCHAR(255) NOT NULL,
    url VARCHAR(255) NOT NULL,
    description TEXT NOT NULL,
    favicon TEXT NOT NULL
+);
+
+CREATE TABLE previews_posts (
+   id SERIAL PRIMARY KEY,
+   preview_id VARCHAR(255) NOT NULL REFERENCES hashtags(name),
+   post_id INTEGER NOT NULL REFERENCES posts(id)
 );
 
 CREATE TABLE likes (
