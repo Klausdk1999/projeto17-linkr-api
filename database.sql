@@ -10,7 +10,7 @@ create TABLE users(
 CREATE TABLE posts (
    id SERIAL PRIMARY KEY,
    author_id INTEGER NOT NULL REFERENCES users(id),
-   url TEXT NOT NULL ,
+   url TEXT NOT NULL,
    description TEXT,
    created_at TIMESTAMP DEFAULT NOW()
 );
@@ -33,6 +33,20 @@ CREATE TABLE hashtags_posts (
    id SERIAL PRIMARY KEY,
    hashtag_name VARCHAR(255) NOT NULL REFERENCES hashtags(name),
    post_id INTEGER NOT NULL REFERENCES posts(id)
+);
+
+CREATE TABLE previews_posts (
+   id SERIAL PRIMARY KEY,
+   preview_id INTEGER NOT NULL REFERENCES previews(id),
+   post_id INTEGER NOT NULL REFERENCES posts(id)
+);
+
+CREATE TABLE previews(
+   id SERIAL PRIMARY KEY,
+   title VARCHAR(255) NOT NULL,
+   url VARCHAR(255) NOT NULL,
+   description TEXT NOT NULL,
+   favicon TEXT NOT NULL
 );
 
 CREATE TABLE likes (
