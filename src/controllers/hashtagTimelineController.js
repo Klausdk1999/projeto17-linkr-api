@@ -12,7 +12,7 @@ const getHashtagPosts = async (req,res) => {
 
         res.status(200).send(hashtagPosts);
     }catch(error){
-        console.log(`[ERRO] In haveHashtag Middlware`);
+        console.log(`[ERRO] In getHashtagPosts Controller`);
         return res.status(500).send(error);
     };
 }
