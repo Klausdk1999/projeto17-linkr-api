@@ -14,6 +14,7 @@ export default async function deletePost(req, res) {
         if ((verifyPost[0].author_id) !== userId) {
             return res.sendStatus(401);
         }
+        await deletePostRepository.deleteLikes([postId]);
         const { rows:preview_id } = await deletePostRepository.deletePreviewPosts([postId]);
         console.log(preview_id)
         await deletePostRepository.deletePreviews([preview_id[0].preview_id])

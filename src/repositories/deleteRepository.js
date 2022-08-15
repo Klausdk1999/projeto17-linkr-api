@@ -41,10 +41,18 @@ const deleteHashtagPosts = (queryString) => {
   )
 }
 
+const deleteLikes = (queryString) => {
+  return connection.query(`
+    DELETE FROM likes
+    WHERE post_id=$1
+  `, queryString)
+}
+
 export const deletePostRepository = {
  findPost,
  deletePost,
  deletePreviewPosts,
  deletePreviews,
- deleteHashtagPosts
+ deleteHashtagPosts,
+ deleteLikes
 }
