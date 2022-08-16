@@ -55,6 +55,12 @@ CREATE TABLE likes (
    post_id INTEGER NOT NULL REFERENCES posts(id)
 );
 
+CREATE TABLE follows (
+   id SERIAL PRIMARY KEY,
+   follower_id INTEGER NOT NULL REFERENCES users(id),
+   followed_id INTEGER NOT NULL REFERENCES users(id)
+);
+
 INSERT INTO users (username,email,password,picture_url) VALUES ('klausdk','klaus@email.com','123','https://i.pinimg.com/originals/17/a2/90/17a29000550b2d5fbe40efb58b2c8459.png'); 
 INSERT INTO posts (author_id,description,url) VALUES ('1','Um link para nosso trello','https://trello.com/b/pQ4glQ7x/projet%C3%A3o-linkr');
 INSERT INTO hashtags (name) VALUES ('Projeto');
