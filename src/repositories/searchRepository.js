@@ -13,8 +13,8 @@ async function searchUsers(queryString) {
         )
     ) as following
     FROM users u
-    WHERE REPLACE (u.username, ' ', '') 
-    LIKE REPLACE($2, ' ', '')
+    WHERE LOWER (REPLACE ( u.username, ' ', ''))
+    LIKE LOWER (REPLACE ($2, ' ', ''))
     ORDER BY following DESC
     `, 
     queryString
