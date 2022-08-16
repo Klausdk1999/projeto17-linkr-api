@@ -16,8 +16,43 @@ async function deletePost(id, userId){
       return postDelete
 }
 
+const deletePreviewPosts = (queryString) => {
+  return connection.query(`
+    DELETE FROM previews_posts
+    WHERE post_id =$1
+    RETURNING preview_id`,
+    queryString
+  )
+}
+
+const deletePreviews = (queryString) => {
+  return connection.query(`
+    DELETE FROM previews
+    WHERE id=$1`,
+    queryString
+  )
+}
+
+const deleteHashtagPosts = (queryString) => {
+  return connection.query(`
+    DELETE FROM hashtags_posts
+    WHERE post_id=$1`,
+    queryString
+  )
+}
+
+const deleteLikes = (queryString) => {
+  return connection.query(`
+    DELETE FROM likes
+    WHERE post_id=$1
+  `, queryString)
+}
 
 export const deletePostRepository = {
  findPost,
- deletePost
+ deletePost,
+ deletePreviewPosts,
+ deletePreviews,
+ deleteHashtagPosts,
+ deleteLikes
 }

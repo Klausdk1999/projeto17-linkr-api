@@ -8,6 +8,7 @@ import { haveHashtag } from "../middlewares/timelineMiddleware.js"
 import publishPost from "../controllers/publishController.js";
 import { searchUser } from "../controllers/searchController.js";
 import { getHashtagPosts } from "../controllers/hashtagTimelineController.js";
+import deletePost from "../controllers/deleteController.js";
 
 const timelineRouter = Router();
 
@@ -25,7 +26,7 @@ timelineRouter.delete("/posts/favorite/:postId/:userId", authenticateToken , rem
 
 timelineRouter.get("/user/:id" , authenticateToken, getUserPosts);
 
-timelineRouter.delete("/posts", );
+timelineRouter.delete("/posts", authenticateToken, deletePost);
 
 timelineRouter.put("/posts", )
 timelineRouter.post("/urls" , getUrlData);

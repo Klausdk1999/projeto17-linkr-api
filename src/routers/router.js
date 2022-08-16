@@ -1,5 +1,4 @@
 import { Router } from "express";
-import postRouter from "../routes/postsRouter.js";
 import authRouter from "./authRouter.js";
 import timelineRouter from "./timelineRouter.js";
 import followRouter from "./followRouter.js";
