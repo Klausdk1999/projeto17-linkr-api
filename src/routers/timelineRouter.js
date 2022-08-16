@@ -9,6 +9,7 @@ import publishPost from "../controllers/publishController.js";
 import { searchUser } from "../controllers/searchController.js";
 import { getHashtagPosts } from "../controllers/hashtagTimelineController.js";
 import deletePost from "../controllers/deleteController.js";
+import getFollowPosts from "../controllers/followsController.js";
 
 const timelineRouter = Router();
 
@@ -17,6 +18,7 @@ timelineRouter.post("/timeline", authenticateToken, validateSchema(publishSchema
 
 timelineRouter.get("/search/:input" , authenticateToken, searchUser); /////////////// validateSchema
 
+timelineRouter.get("/following", authenticateToken, getFollowPosts) //Futuro posts;
 timelineRouter.get("/posts" , authenticateToken, getPosts);
 timelineRouter.get("/posts/favorite/:postId/:userId", getFavorites);
 
