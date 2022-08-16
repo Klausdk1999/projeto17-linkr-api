@@ -21,7 +21,6 @@ async function getLikers(postId){
     join likes l
     on l.liker_id = u.id
     where l.post_id = $1`, [postId]);
-    console.log(likers);
     return likers;
 }
 
