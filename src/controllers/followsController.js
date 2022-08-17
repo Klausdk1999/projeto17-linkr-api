@@ -5,7 +5,6 @@ export default async function getFollowPosts(req,res){
     const {page, created_at} = req.body;
     try{
         const {rows:following} = await followRepository.getFollowings([userId]);
-        console.log(following)
         if(following.length === 0) return res.sendStatus(404);
         let queryString;
         if(created_at === undefined){
