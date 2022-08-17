@@ -7,7 +7,7 @@ export async function searchUser(req, res){
     try{
       const { rows:users } = await searchRepository.searchUsers([userId, `${username}%`]);
       if(users.length === 0) return res.sendStatus(404);
-      res.status(302).send(users);
+      res.status(200).send(users);
     }catch(e){
       return res.status(500).send(e);
     }

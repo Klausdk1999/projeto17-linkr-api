@@ -30,6 +30,7 @@ const getHashtagPosts = async (req,res) => {
         if(haveHashtag.length === 0) return res.status(404).send("hashtag");
 
         const { rows: hashtagPosts } = await postsRepository.getHashtagPosts([hashtag]);
+        console.log(hashtagPosts)
         if(hashtagPosts.length === 0) return res.status(404).send("posts");
 
         res.status(200).send(hashtagPosts);
