@@ -16,7 +16,7 @@ const publishPost = async (req, res) => {
         data.favicons[0]
       ]
     });
-    if(urlPreview.length === 0) return res.sendStatus(406);
+    if(urlPreview.length === 0) return res.sendStatus(422);
     const {rows:previewId} = await publishQuerys.postPreview(urlPreview);
     const {rows:postId } = await publishQuerys.postPublish([userId, description, url]);
     await publishQuerys.postPreviewPosts([previewId[0].id, postId[0].id])

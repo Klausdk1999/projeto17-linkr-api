@@ -6,7 +6,7 @@ async function getTimelinePosts(req,res){
     const {page, created_at} = req.body;
     try{
         const {rows:following} = await followRepository.getFollowings([userId]);
-        if(following.length === 0) return res.sendStatus(404);
+        if(following.length === 0) return res.status(404).send("follows");
         let queryString;
         if(created_at === undefined){
             queryString = [userId, page]
@@ -14,7 +14,7 @@ async function getTimelinePosts(req,res){
             queryString = [userId, page, created_at]
         }
         const { rows:posts } = await followRepository.getFollowPosts(queryString);
-        if(posts.length === 0) return res.sendStatus(204)
+        if(posts.length === 0) return res.status(404).send("posts")
         res.status(200).send(posts)
     }catch(e){
         console.log(`[ERRO] In getHashtagPosts Controller`);
@@ -27,10 +27,10 @@ const getHashtagPosts = async (req,res) => {
     const { hashtag } = req.params;
     try{
         const { rows: haveHashtag } = await postsRepository.haveHashtag([hashtag]);
-        if(haveHashtag.length === 0) return res.sendStatus(404);
+        if(haveHashtag.length === 0) return res.status(404).send("hashtag");
 
         const { rows: hashtagPosts } = await postsRepository.getHashtagPosts([hashtag]);
-        if(hashtagPosts.length === 0) return res.sendStatus(204);
+        if(hashtagPosts.length === 0) return res.status(404).send("posts");
 
         res.status(200).send(hashtagPosts);
     }catch(error){
@@ -42,9 +42,10 @@ const getHashtagPosts = async (req,res) => {
 async function getUserPosts(req, res){
     const userId = req.params.id;
     try{
-      const posts = await postsRepository.getPosts(userId);
+      const { rows:posts } = await postsRepository.getPosts(userId);
+      if(posts.length === 0) return res.status(404).send("posts")
   
-      return res.status(201).send(posts.rows);
+      return res.status(200).send(posts);
     }catch(e){
       console.log(`[ERRO] In getUserPosts Controller`);
       return res.status(500).send(e);
