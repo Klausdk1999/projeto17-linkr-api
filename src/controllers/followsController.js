@@ -1,6 +1,6 @@
 import { followRepository } from "../repositories/followRepository.js";
 
-export default async function getFollowPosts(req,res){
+export default async function getTimelinePosts(req,res){
     const userId = res.locals.userId;
     const {page, created_at} = req.body;
     try{

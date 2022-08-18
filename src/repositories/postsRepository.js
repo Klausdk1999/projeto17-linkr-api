@@ -101,3 +101,54 @@ export const postsRepository = {
     haveHashtag,
     getHashtagPosts
 }
+
+
+
+
+
+/*
+async function getPosts(userId) {
+    const whereClause = userId ? " WHERE p.author_id = $1 " : "";
+    const query = `
+        SELECT p.id as post_id, u.id as user_id, u.username, u.picture_url, p.description, p.url, p.created_at,
+        (
+            SELECT
+            ARRAY_AGG(
+                jsonb_build_object(
+                    'id', l.id,
+                    'liker_username', u.username
+                )
+            )
+            FROM likes l
+            JOIN users u
+            ON l.liker_id = u.id
+            WHERE l.post_id = p.id
+        )as likes,
+        (
+            SELECT
+            ARRAY_AGG(
+                jsonb_build_object(
+                    'title', pr.title,
+                    'description', pr.description,
+                    'url', pr.url,
+                    'favicon', pr.favicon
+                )
+            )
+            FROM previews pr
+            WHERE pp.preview_id = pr.id AND pp.post_id = p.id
+        ) as preview
+        FROM users_posts up
+        JOIN posts p
+        ON p.id = up.post_id
+        JOIN users u
+        ON p.author_id = u.id
+        JOIN previews_posts pp
+        ON p.id = pp.post_id
+        WHERE up.user_id = $1
+        ORDER BY p.created_at DESC 
+        LIMIT 20;
+`
+	return userId ? connection.query(query, [userId]) : connection.query(query);
+}
+
+*/
