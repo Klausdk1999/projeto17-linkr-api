@@ -3,16 +3,21 @@ import { postsRepository } from "../repositories/postsRepository.js";
 
 async function getTimelinePosts(req,res){
     const userId = res.locals.userId;
-    const {page, created_at} = req.body;
+    const { page, created } = req.params;
     try{
         const {rows:following} = await followRepository.getFollowings([userId]);
+
         if(following.length === 0) return res.status(404).send("follows");
         let queryString;
-        if(created_at === undefined){
-            queryString = [userId, page]
+
+        const offset = page * 10
+        console.log(offset);
+        if(created === undefined){
+            queryString = [userId, offset]
         } else {
-            queryString = [userId, page, created_at]
+            queryString = [userId, offset, created]
         }
+
         const { rows:posts } = await followRepository.getFollowPosts(queryString);
         if(posts.length === 0) return res.status(404).send("posts")
         res.status(200).send(posts)

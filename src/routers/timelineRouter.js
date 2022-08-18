@@ -22,7 +22,7 @@ const timelineRouter = Router();
 timelineRouter.post("/timeline", authenticateToken, validateSchema(publishSchema), haveHashtag, publishPost);
 
 //Timeline Posts
-timelineRouter.get("/timeline/posts", authenticateToken, getTimelinePosts);
+timelineRouter.get("/timeline/posts/:page", authenticateToken, getTimelinePosts);
 
 //Hashtag Timeline Posts
 timelineRouter.get("/hashtag/:hashtag", authenticateToken, getHashtagPosts)
