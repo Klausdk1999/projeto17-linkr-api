@@ -75,7 +75,6 @@ export async function removeFavorite(req, res){
 
 export async function getFavorites(req, res){
   const postId = req.params.postId;
-  let isFavorite = false;
 
  
   try{

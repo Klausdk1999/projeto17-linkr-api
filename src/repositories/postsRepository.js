@@ -37,7 +37,7 @@ async function getPosts(userId) {
         ON p.author_id = u.id
         JOIN previews_posts pp
         ON p.id = pp.post_id
-        ${whereClause}
+        WHERE p.author_id = $1
         ORDER BY p.created_at DESC 
         LIMIT 20;
 `

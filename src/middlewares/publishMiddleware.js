@@ -12,7 +12,6 @@ const getUrlPreview = (url) => async (req,res,next) => {
           ]
       });
       if(urlPreview.length === 0) return res.sendStatus(406);
-      console.log(`OI`)
       res.locals.urlPreview = urlPreview;
       next();
     }catch(e){

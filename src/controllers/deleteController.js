@@ -3,7 +3,6 @@ import { deletePostRepository } from "../repositories/deleteRepository.js";
 export default async function deletePost(req, res) {
     const userId = res.locals.userId; 
     const { postId } = req.body;
-    console.log(postId)
     // try {
         const {rows: verifyPost} = await deletePostRepository.findPost(postId)
         console.log(verifyPost)
