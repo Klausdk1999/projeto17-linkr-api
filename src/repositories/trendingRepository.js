@@ -1,5 +1,10 @@
 import connection from "../setup/database.js";
 
+const findHashtag = async (queryString) => {
+    return connection.query(`SELECT * FROM hashtags WHERE name=$1`, queryString)
+}
+
+
 const get10Trendings = async () => {
     return await connection.query(`
         SELECT name
@@ -9,4 +14,4 @@ const get10Trendings = async () => {
     `)
 };
 
-export { get10Trendings };
+export { get10Trendings, findHashtag };

@@ -1,7 +1,6 @@
 import connection from "../setup/database.js";
 
 const getFollowPosts = async (queryString) => {
-    console.log(queryString.length)
     const andCreatedTime =  queryString.length === 3  ? `AND p.created_at <= $3` : "";
     const query = `
         SELECT p.id as post_id, u.id as user_id, u.username, u.picture_url,
