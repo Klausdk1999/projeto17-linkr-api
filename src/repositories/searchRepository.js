@@ -21,7 +21,17 @@ async function searchUsers(queryString) {
     );
 }
 
-export const searchRepository = {
-    searchUsers
+const searchUserById = (queryString) => {
+    return connection.query(`
+        SELECT *
+        FROM users u
+        WHERE u.id = $1
+        `, 
+        queryString
+    )
+}
 
+export const searchRepository = {
+    searchUsers,
+    searchUserById
 }
