@@ -21,6 +21,7 @@
     "jsonwebtoken": "^8.5.1",
     "link-preview-js": "^3.0.3",
     "nodemon": "^2.0.19",
-    "pg": "^8.7.3"
+    "pg": "^8.7.3",
+    "string-strip-html": "^11.2.0"
   }
 }
