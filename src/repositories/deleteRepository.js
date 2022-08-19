@@ -1,11 +1,8 @@
 import connection from "../setup/database.js";
 
-async function deletePost(id, userId){
+async function deletePost(queryString){
 
-    const postDelete =  await connection.query(`DELETE FROM posts WHERE author_id = $1 AND id = $2`, [
-        userId,
-        id,
-      ]);
+    const postDelete =  await connection.query(`DELETE FROM posts WHERE author_id = $1 AND id = $2`, queryString);
       return postDelete
 }
 
@@ -41,10 +38,34 @@ const deleteLikes = (queryString) => {
   `, queryString)
 }
 
+const deleteComments = ( queryString ) => {
+  return connection.query(`
+    DELETE FROM comments
+    WHERE post_id=$1
+  `, queryString)
+}
+
+const deleteRepost = (queryString) => {
+  return connection.query(`
+    DELETE FROM reposts_posts
+    WHERE id=$1
+  `, queryString)
+}
+
+const deleteAllReposts = (queryString) => {
+  return connection.query(`
+    DELETE FROM reposts_posts
+    WHERE post_id=$1
+  `, queryString)
+}
+
 export const deletePostRepository = {
   deletePost,
   deletePreviewPosts,
   deletePreviews,
   deleteHashtagPosts,
-  deleteLikes
+  deleteLikes,
+  deleteRepost,
+  deleteComments,
+  deleteAllReposts
 }

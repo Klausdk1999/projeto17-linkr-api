@@ -86,10 +86,23 @@ const editPost = (queryString) => {
     return connection.query(`UPDATE posts SET description=$1 WHERE id=$2 and author_id=$3`, queryString)
 }
 
+const getRepostById = ( queryString ) => {
+    return connection.query(`SELECT * FROM reposts_posts WHERE post_id=$1 AND user_id=$2
+    RETURNING id`, queryString)
+}
+
+const getReposts = ( queryString ) => {
+    return connection.query(`
+    SELECT FROM reposts_posts
+    WHERE post_id=$1
+    `, queryString)
+}
 export const postsRepository = {
     getFriendsPosts,
     getUserPosts,
     getHashtagPosts,
     getPostId,
     editPost,
+    getRepostById,
+    getReposts
 };

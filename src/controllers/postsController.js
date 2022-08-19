@@ -61,19 +61,37 @@ export async function editPost(req, res){
 
 
 export async function deletePost(req, res) {
-    const {userId} = res.locals
-    const { postId } = req.body;
+    const { userId } = res.locals
+    const { postId } = req.params;
 
     try {
         const {rows: verifyPost} = await postsRepository.getPostId([postId, userId])
-        if (verifyPost.length === 0)return res.sendStatus(404);
+
+        if(verifyPost.length === 0){
+          const { rows: isRepost } = await postsRepository.getRepostById([postId, userId])
+          if(isRepost.length === 0) return res.sendStatus(401);
+          await deletePostRepository.deleteRepost([isRepost[0].id]);
+          return res.sendStatus(200);
+        };
 
         await deletePostRepository.deleteLikes([postId]);
+
         const { rows:preview_id } = await deletePostRepository.deletePreviewPosts([postId]);
+
         await deletePostRepository.deletePreviews([preview_id[0].preview_id])
+
         await deletePostRepository.deleteHashtagPosts([postId]);
-        await deletePostRepository.deletePost(postId, userId)
-        //get em posts e eenviar 
+
+        await deletePostRepository.deleteComments([postId])
+
+        const { rows: reposts } = await postsRepository.getReposts([postId]);
+
+        if(reposts.length !== 0){
+          await deletePostRepository.deleteAllReposts([postId])
+        }
+
+        await deletePostRepository.deletePost([userId, postId]);
+
         res.sendStatus(200)
         
     } catch (error) {
