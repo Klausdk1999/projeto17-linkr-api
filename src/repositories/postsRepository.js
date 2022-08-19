@@ -24,6 +24,11 @@ const DEFAULT_QUERY = `
 `
 const REPOST_QUERY = `
     SELECT pu.id,p.id as post_id, u.id as user_id, u.username, u.picture_url, p.description, p.url, pu.created_at, u2.id as repost_user, u2.username as repost_username,
+    (
+        SELECT 
+        COALESCE(COUNT(rp.post_id), 0)::INT AS reposts_count FROM reposts_posts rp
+        WHERE pu.post_id = rp.post_id
+    )as reposts_count,
     CASE
         WHEN pu.user_id = p.author_id THEN false
         ELSE true
