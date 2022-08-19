@@ -2,6 +2,7 @@ import { deletePostRepository } from "../repositories/deleteRepository.js";
 import {favoriteRepository} from '../repositories/favoriteRepository.js'
 import { postsRepository } from '../repositories/postsRepository.js';
 import { publishQuerys } from "../repositories/publishRepository.js"
+
 export async function favoritePost(req, res){
   const {postId, userId} = req.body;
   try{
@@ -102,13 +103,12 @@ export async function deletePost(req, res) {
 
 export async function postRepost(req,res){
   const { userId } = res.locals
-  const { postId } = req.params;
-
+  const { postId } = req.body;
   try {
     const { rows: post} = await postsRepository.getPost([postId]);
     if(post.length === 0) return res.sendStatus(404);
 
-    await postsRepository.postRepost([ postId , userId ]);
+    await postsRepository.postReposts([postId, userId]);
     await publishQuerys.postPostOrder([postId, userId]);
     res.sendStatus(201);
   } catch (error) {
