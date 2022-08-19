@@ -1,38 +1,40 @@
 import { Router } from "express";
 import authenticateToken from "../middlewares/validations/tokenAuthentication.js";
-import { getPosts,getUrlData, getUserPosts, favoritePost, getFavorites, removeFavorite } from "../controllers/postsController.js";
-import getTrendings from "../controllers/trendingController.js";
+
 import validateSchema from "../middlewares/validations/schemaValidation.js"
+
 import publishSchema from "../schemas/publishSchema.js"
 import { haveHashtag } from "../middlewares/timelineMiddleware.js"
 import publishPost from "../controllers/publishController.js";
+
+import { getTimelinePosts, getHashtagPosts, getUserPosts, getTest } from "../controllers/timelinesController.js";
+
 import { searchUser } from "../controllers/searchController.js";
-import { getHashtagPosts } from "../controllers/hashtagTimelineController.js";
-import deletePost from "../controllers/deleteController.js";
+
+import getTrendings from "../controllers/trendingController.js";
+
+
+
 
 const timelineRouter = Router();
 
 //Publish new post
-timelineRouter.post("/timeline", authenticateToken, validateSchema(publishSchema), haveHashtag, publishPost)
+timelineRouter.post("/timeline", authenticateToken, validateSchema(publishSchema), haveHashtag, publishPost);
 
-timelineRouter.get("/search/:input" , authenticateToken, searchUser); /////////////// validateSchema
+//Timeline Posts
+timelineRouter.get("/timeline/posts", authenticateToken, getTimelinePosts);
 
-timelineRouter.get("/posts" , authenticateToken, getPosts);
-timelineRouter.get("/posts/favorite/:postId/:userId", getFavorites);
+//Hashtag Timeline Posts
+timelineRouter.get("/hashtag/:hashtag", authenticateToken, getHashtagPosts)
 
-timelineRouter.post("/posts/favorite", authenticateToken , favoritePost);
-timelineRouter.delete("/posts/favorite/:postId/:userId", authenticateToken , removeFavorite);
-
-
+//User Timeline Posts
 timelineRouter.get("/user/:id" , authenticateToken, getUserPosts);
 
-timelineRouter.delete("/posts", authenticateToken, deletePost);
 
-timelineRouter.put("/posts", )
-timelineRouter.post("/urls" , getUrlData);
+//Filtrar users
+timelineRouter.get("/search/:username" , authenticateToken, searchUser);
 
-//Hashtag Timeline
-timelineRouter.get("/hashtag/:hashtag", authenticateToken, getHashtagPosts)
+timelineRouter.get("/timeline/reposts", authenticateToken, getTest)
 
 //Trending SideBar
 timelineRouter.get("/trendings", authenticateToken, getTrendings);

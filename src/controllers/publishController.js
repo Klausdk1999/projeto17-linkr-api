@@ -6,7 +6,7 @@ const publishPost = async (req, res) => {
   const { url, description } = req.body;
   const { allHashtagsNames } = res.locals;
   let urlPreview;
-  // try {
+  try {
     await getLinkPreview(url).then((data) => {
 
       return urlPreview = [
@@ -16,10 +16,11 @@ const publishPost = async (req, res) => {
         data.favicons[0]
       ]
     });
-    if(urlPreview.length === 0) return res.sendStatus(406);
+    if(urlPreview.length === 0) return res.sendStatus(422);
     const {rows:previewId} = await publishQuerys.postPreview(urlPreview);
     const {rows:postId } = await publishQuerys.postPublish([userId, description, url]);
     await publishQuerys.postPreviewPosts([previewId[0].id, postId[0].id])
+    await publishQuerys.postPostOrder([postId[0].id, userId])
     if (allHashtagsNames.length > 0) {
       for (let i = 0; i < allHashtagsNames.length; i++) {
         const hashtagName = allHashtagsNames[i];
@@ -27,10 +28,10 @@ const publishPost = async (req, res) => {
       }
     }
     res.sendStatus(201);
-  // } catch (error) {
-  //   console.log(`[ERRO] In publishPost controller`);
-  //   return res.status(500).send(error);
-  // }
+  } catch (error) {
+    console.log(`[ERRO] In publishPost controller`);
+    return res.status(500).send(error);
+  }
 };
 
 export default publishPost;

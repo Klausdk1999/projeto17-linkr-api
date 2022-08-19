@@ -70,6 +70,14 @@ const postPreviewPosts = async(queryString) => {
     queryString)
 }
 
+const postPostOrder = async (queryString) => {
+    return connection.query(`
+    INSERT INTO posts_users
+    (post_id, user_id)
+    VALUES
+    ($1, $2)`, queryString)
+}
+
 export const publishQuerys = {
     haveHashtag,
     newHashtag,
@@ -77,5 +85,6 @@ export const publishQuerys = {
     postPublish,
     hashtagsPosts,
     postPreview,
-    postPreviewPosts
+    postPreviewPosts,
+    postPostOrder
 };
