@@ -7,7 +7,7 @@ import publishSchema from "../schemas/publishSchema.js"
 import { haveHashtag } from "../middlewares/timelineMiddleware.js"
 import publishPost from "../controllers/publishController.js";
 
-import { getTimelinePosts, getHashtagPosts, getUserPosts } from "../controllers/timelinesController.js";
+import { getTimelinePosts, getHashtagPosts, getUserPosts, getTest } from "../controllers/timelinesController.js";
 
 import { searchUser } from "../controllers/searchController.js";
 
@@ -34,6 +34,7 @@ timelineRouter.get("/user/:id" , authenticateToken, getUserPosts);
 //Filtrar users
 timelineRouter.get("/search/:username" , authenticateToken, searchUser);
 
+timelineRouter.get("/timeline/reposts", authenticateToken, getTest)
 
 //Trending SideBar
 timelineRouter.get("/trendings", authenticateToken, getTrendings);
