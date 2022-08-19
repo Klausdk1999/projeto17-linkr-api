@@ -65,12 +65,29 @@ CREATE TABLE comments(
     created_at TIMESTAMP DEFAULT NOW()
 );
 
+CREATE TABLE posts_users(
+   id SERIAL NOT NULL PRIMARY KEY,
+   post_id INTEGER NOT NULL REFERENCES posts(id),
+   user_id INTEGER NOT NULL REFERENCES users(id),
+   created_at TIMESTAMP DEFAULT NOW()
+);
+
 CREATE TABLE reposts_posts(
    id SERIAL NOT NULL PRIMARY KEY,
    post_id INTEGER NOT NULL REFERENCES posts(id),
    user_id INTEGER NOT NULL REFERENCES users(id),
    created_at TIMESTAMP DEFAULT NOW()
 );
+
+DROP TABLE reposts_posts;
+DROP TABLE posts_users;
+DROP TABLE hashtags_posts;
+DROP TABLE hashtags;
+DROP TABLE comments;
+DROP TABLE likes;
+DROP TABLE previews_posts;
+DROP TABLE previews;
+DROP TABLE posts;
 
 INSERT INTO users (username,email,password,picture_url) VALUES ('klausdk','klaus@email.com','123','https://i.pinimg.com/originals/17/a2/90/17a29000550b2d5fbe40efb58b2c8459.png'); 
 INSERT INTO posts (author_id,description,url) VALUES ('1','Um link para nosso trello','https://trello.com/b/pQ4glQ7x/projet%C3%A3o-linkr');
