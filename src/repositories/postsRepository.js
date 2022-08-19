@@ -49,6 +49,9 @@ const TEST_QUERY = `
     JOIN previews_posts pp
     ON p.id = pp.post_id
 `
+/*
+
+*/
 
 const CREATE_ORDER = `
 SELECT *
@@ -131,12 +134,13 @@ const getReposts = ( queryString ) => {
     `, queryString)
 }
 
-const postRepost = ( queryString ) => {
+const postReposts = ( queryString ) => {
+    return connection.query(
     ` INSERT INTO reposts_posts
         (post_id, user_id)
         VALUES
         ($1, $2)
-    `, queryString
+    `, queryString)
 }
 
 
@@ -145,7 +149,7 @@ const getWithReposts = (queryString) => {
     return connection.query(`
         ${TEST_QUERY}
         CROSS JOIN follows f
-        WHERE followed_id = u.id AND follower_id = $1
+        WHERE f.followed_id = u.id AND f.follower_id = $1
         ${andCreatedTime}
         ORDER BY pu.created_at DESC
         LIMIT 10
@@ -163,6 +167,6 @@ export const postsRepository = {
     getRepostById,
     getReposts,
     getPost,
-    postRepost,
+    postReposts,
     getWithReposts
 };
