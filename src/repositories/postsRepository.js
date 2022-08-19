@@ -22,10 +22,10 @@ const DEFAULT_QUERY = `
     JOIN previews_posts pp
     ON p.id = pp.post_id
 `
-const TEST_QUERY = `
-    SELECT p.id as post_id, u.id as user_id, u.username, u.picture_url, p.description, p.url, pu.created_at,
+const REPOST_QUERY = `
+    SELECT pu.id,p.id as post_id, u.id as user_id, u.username, u.picture_url, p.description, p.url, pu.created_at, u2.id as repost_user, u2.username as repost_username,
     CASE
-        WHEN u.id = p.author_id THEN false
+        WHEN pu.user_id = p.author_id THEN false
         ELSE true
     END AS repost_post,
     (
@@ -46,33 +46,19 @@ const TEST_QUERY = `
     ON p.id = pu.post_id
     JOIN users u
     ON p.author_id = u.id
+    JOIN users u2
+    ON pu.user_id = u2.id
     JOIN previews_posts pp
     ON p.id = pp.post_id
 `
-/*
-
-*/
-
-const CREATE_ORDER = `
-SELECT *
-(
-    SELECT created_at FROM reposts_posts
-)
-UNION
-(
-    SELECT created_at FROM posts
-) as created_order
-ORDER BY created_order DESC
-`
-
 const getFriendsPosts = ( queryString ) => {
     const andCreatedTime = queryString.length === 3 ? `AND p.created_at <= $3` : "";
     return connection.query(`
-        ${DEFAULT_QUERY}
+        ${REPOST_QUERY}
         CROSS JOIN follows f
         WHERE followed_id = u.id AND follower_id = $1
         ${andCreatedTime}
-        ORDER BY p.created_at DESC
+        ORDER BY pu.id DESC
         LIMIT 10
         OFFSET $2
         `, queryString
@@ -82,10 +68,10 @@ const getFriendsPosts = ( queryString ) => {
 const getUserPosts = (queryString) => {
     const andCreatedTime = queryString.length === 3 ? `AND p.created_at <= $3` : "";
     return connection.query(`
-        ${DEFAULT_QUERY}
+        ${REPOST_QUERY}
         WHERE p.author_id = $1
         ${andCreatedTime}
-        ORDER BY p.created_at DESC
+        ORDER BY pu.id DESC
         LIMIT 10
         OFFSET $2
         `, queryString
@@ -96,12 +82,12 @@ const getHashtagPosts = ( queryString ) => {
     console.log(queryString)
     const andCreatedTime = queryString.length === 3 ? `AND p.created_at <= $3` : "";
     return connection.query(`
-        ${DEFAULT_QUERY}
+        ${REPOST_QUERY}
         JOIN hashtags_posts h
         ON p.id = h.post_id
         WHERE h.hashtag_name=$1
         ${andCreatedTime}
-        ORDER BY p.created_at DESC
+        ORDER BY pu.id DESC
         LIMIT 10
         OFFSET $2
         `, queryString
@@ -145,11 +131,12 @@ const postReposts = ( queryString ) => {
 
 
 const getWithReposts = (queryString) => {
+    const OFFSET = [queryString[2]]
     const andCreatedTime = queryString.length === 3 ? `AND p.created_at <= $3` : "";
     return connection.query(`
-        ${TEST_QUERY}
+        ${REPOST_QUERY}
         CROSS JOIN follows f
-        WHERE f.followed_id = u.id AND f.follower_id = $1
+        WHERE followed_id = u.id AND follower_id = $1
         ${andCreatedTime}
         ORDER BY pu.created_at DESC
         LIMIT 10
