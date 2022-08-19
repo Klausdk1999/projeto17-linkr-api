@@ -11,6 +11,13 @@ const getQueryString = (where, page, created) => {
         return [where, offsetSize, created]
     }
 }
+const refresh = (where, create) => {
+    if(create === undefined){
+        return [where]
+    } else {
+        return [where, create]
+    }
+}
 
 async function getTimelinePosts(req,res){
     const { userId } = res.locals;
@@ -28,6 +35,23 @@ async function getTimelinePosts(req,res){
         console.log(`[ERRO] In getHashtagPosts Controller`);
         return res.status(500).send(e);
     }
+};
+async function getTimelinePostsRefresh(req,res){
+    const { userId } = res.locals;
+    const { created } = req.query;
+    // try{
+        const {rows:following} = await followRepository.getFollowings([userId]);
+        if(following.length === 0) return res.status(404)
+
+        const queryString = refresh(userId, created);
+
+        const { rows:posts } = await postsRepository.getFriendsPostsRefresh(queryString);
+        if(posts.length === 0) return res.status(404);
+        res.status(200).send(posts)
+    // }catch(e){
+    //     console.log(`[ERRO] In getHashtagPosts Controller`);
+    //     return res.status(500).send(e);
+    // }
 };
 
 async function getTest(req,res){
@@ -71,6 +95,25 @@ const getHashtagPosts = async (req,res) => {
         return res.status(500).send(error);
     };
 };
+const getHashtagPostsRefresh = async (req,res) => {
+    const { hashtag } = req.params;
+    const { created } = req.query;
+    try{
+        const { rows: haveHashtag } = await findHashtag([hashtag]);
+        if(haveHashtag.length === 0) return res.status(404);
+
+        const queryString = refresh(hashtag, created);
+
+        const { rows: hashtagPosts } = await postsRepository.getHashtagPostsRefresh(queryString);
+
+        if(hashtagPosts.length === 0) return res.status(404);
+
+        res.status(200).send(hashtagPosts);
+    }catch(error){
+        console.log(`[ERRO] In getHashtagPosts Controller`);
+        return res.status(500).send(error);
+    };
+};
 
 async function getUserPosts(req, res){
     const userId = req.params.id;
@@ -91,7 +134,29 @@ async function getUserPosts(req, res){
       return res.status(500).send(e);
     }
   }
+
+  
+
+  async function getUserPostsRefresh(req, res){
+    const userId = req.params.id;
+    const { created } = req.query;
+    try{
+        const { rows:haveUserId } = await searchRepository.searchUserById([userId]);
+        console.log(haveUserId)
+        if(haveUserId.length === 0) res.status(404).send({page:"user", where:"user"});
+
+        const queryString = refresh(userId, created)
+
+      const { rows:posts } = await postsRepository.getUserPostsRefresh(queryString);
+      if(posts.length === 0) return res.status(404).send({page:"user", where:"posts"})
+  
+      return res.status(200).send(posts);
+    }catch(e){
+      console.log(`[ERRO] In getUserPosts Controller`);
+      return res.status(500).send(e);
+    }
+  }
   
 
 
-export { getTimelinePosts, getHashtagPosts, getUserPosts, getTest }
+export { getTimelinePosts, getHashtagPosts, getUserPosts, getTest, getUserPostsRefresh, getHashtagPostsRefresh, getTimelinePostsRefresh}

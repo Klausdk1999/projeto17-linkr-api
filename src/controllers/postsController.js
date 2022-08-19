@@ -46,7 +46,7 @@ export async function getFavorites(req, res){
 
 export async function editPost(req, res){
   const { userId } = res.locals;
-  const { postId } = req.params;
+  const { postId } = req.body;
   const {description} = req.body;
   try{
     const { rows:havePost } = await postsRepository.getPostId([postId, userId]);
