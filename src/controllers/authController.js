@@ -49,3 +49,16 @@ export async function signIn(req, res){
     }
 
 }
+
+
+
+export async function getUserById(req, res){
+    const userId = req.params.userId;
+    try{
+        const {rows: user} = await authRepository.getUserById(userId);
+    console.log(user[0])
+        return res.send(user);
+    }catch(err){
+        return res.sendStatus(500);
+    }
+}

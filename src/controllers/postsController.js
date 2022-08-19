@@ -35,7 +35,6 @@ export async function getFavorites(req, res){
     res.status(200).send(likers);
 
   }catch(e){
-    console.log(e)
     return res.sendStatus(500);
   }
 

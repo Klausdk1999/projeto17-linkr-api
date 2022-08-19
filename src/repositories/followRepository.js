@@ -47,7 +47,7 @@ const getFollowPosts = async (queryString) => {
 
 
 const getFollowings = (queryString) => {
-    console.log(queryString)
+   // console.log(queryString)
     return connection.query(`
         SELECT *
         FROM follows

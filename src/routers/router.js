@@ -5,7 +5,6 @@ import followRouter from "./followRouter.js";
 import likeRouter from "./likeRouter.js";
 import postRouter from "./postRouter.js";
 import timelineRouter from "./timelineRouter.js";
-
 const router = Router();
 
 router.use(authRouter);

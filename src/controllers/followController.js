@@ -33,7 +33,6 @@ export async function getUserFollowers(req, res){
         const followers = await followRepository.getFollowers(followedId);
         return res.status(200).send(followers);
     }catch(err){
-        console.log(err)
         return res.sendStatus(500);
     }
 }
@@ -42,14 +41,12 @@ export async function getUserFollowers(req, res){
 
 export async function getFollowings(req, res){
     const userId = req.params.userId;
-    console.log(userId)
 
     try{
         const {rows: following} = await followRepository.getFollowings([userId]);
-        console.log(following)
+       // console.log(following)
         return res.send(following);
     }catch(err){
-       // console.log(err)
         res.sendStatus(500);
     }
 }

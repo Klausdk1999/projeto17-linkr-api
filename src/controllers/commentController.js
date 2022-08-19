@@ -5,7 +5,6 @@ export async function commentPost(req, res){
        await commentQueries.addComment(postId, commenterId, comment);
        res.sendStatus(201);
     }catch(err){
-        console.log(err)
         return res.sendStatus(500);
     }
 
