@@ -57,7 +57,7 @@ const REPOST_QUERY = `
     ON p.id = pp.post_id
 `
 const getFriendsPosts = ( queryString ) => {
-    const andCreatedTime = queryString.length === 3 ? `AND p.created_at <= $3` : "";
+    const andCreatedTime = queryString.length === 3 ? `AND pu.id <= $3` : "";
     return connection.query(`
         ${REPOST_QUERY}
         CROSS JOIN follows f
@@ -69,9 +69,20 @@ const getFriendsPosts = ( queryString ) => {
         `, queryString
     );
 };
+const getFriendsPostsRefresh = ( queryString ) => {
+    const andCreatedTime = queryString.length === 2 ? `AND pu.id > $2` : "";
+    return connection.query(`
+        ${REPOST_QUERY}
+        CROSS JOIN follows f
+        WHERE followed_id = u.id AND follower_id = $1
+        ${andCreatedTime}
+        ORDER BY pu.id DESC
+        `, queryString
+    );
+};
 
 const getUserPosts = (queryString) => {
-    const andCreatedTime = queryString.length === 3 ? `AND p.created_at <= $3` : "";
+    const andCreatedTime = queryString.length === 3 ? `AND pu.id <= $3` : "";
     return connection.query(`
         ${REPOST_QUERY}
         WHERE p.author_id = $1
@@ -83,9 +94,20 @@ const getUserPosts = (queryString) => {
     );
 };
 
+const getUserPostsRefresh = (queryString) => {
+    const andCreatedTime = queryString.length === 3 ? `AND pu.id > $2` : "";
+    return connection.query(`
+        ${REPOST_QUERY}
+        WHERE p.author_id = $1
+        ${andCreatedTime}
+        ORDER BY pu.id DESC
+        `, queryString
+    ); 
+}
+
 const getHashtagPosts = ( queryString ) => {
     console.log(queryString)
-    const andCreatedTime = queryString.length === 3 ? `AND p.created_at <= $3` : "";
+    const andCreatedTime = queryString.length === 3 ? `AND pu.id <= $3` : "";
     return connection.query(`
         ${REPOST_QUERY}
         JOIN hashtags_posts h
@@ -95,6 +117,20 @@ const getHashtagPosts = ( queryString ) => {
         ORDER BY pu.id DESC
         LIMIT 10
         OFFSET $2
+        `, queryString
+    );
+};
+
+const getHashtagPostsRefresh = ( queryString ) => {
+    console.log(queryString)
+    const andCreatedTime = queryString.length === 3 ? `AND pu.id > $2` : "";
+    return connection.query(`
+        ${REPOST_QUERY}
+        JOIN hashtags_posts h
+        ON p.id = h.post_id
+        WHERE h.hashtag_name=$1
+        ${andCreatedTime}
+        ORDER BY pu.id DESC
         `, queryString
     );
 };
@@ -137,13 +173,13 @@ const postReposts = ( queryString ) => {
 
 const getWithReposts = (queryString) => {
     const OFFSET = [queryString[2]]
-    const andCreatedTime = queryString.length === 3 ? `AND p.created_at <= $3` : "";
+    const andCreatedTime = queryString.length === 3 ? `AND pu.id <= $3` : "";
     return connection.query(`
         ${REPOST_QUERY}
         CROSS JOIN follows f
         WHERE followed_id = u.id AND follower_id = $1
         ${andCreatedTime}
-        ORDER BY pu.created_at DESC
+        ORDER BY pu.id DESC
         LIMIT 10
         OFFSET $2
         `, queryString
@@ -160,5 +196,8 @@ export const postsRepository = {
     getReposts,
     getPost,
     postReposts,
-    getWithReposts
+    getWithReposts,
+    getFriendsPostsRefresh,
+    getHashtagPostsRefresh,
+    getUserPostsRefresh
 };

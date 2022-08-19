@@ -6,7 +6,7 @@ const postRouter = Router();
 
 
 postRouter.delete("/posts", authenticateToken, deletePost); //Deletar Post
-postRouter.put("/posts/:postId", authenticateToken, editPost); //Editar descrição
+postRouter.put("/description", authenticateToken, editPost); //Editar descrição
 
 postRouter.post("/reposts", authenticateToken, postRepost)
 
