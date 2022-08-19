@@ -78,9 +78,18 @@ const getHashtagPosts = ( queryString ) => {
     );
 };
 
+const getPostId = ( queryString ) => {
+    return connection.query(`SELECT * FROM posts WHERE id=$1 and author_id=$2`, queryString)
+}
+
+const editPost = (queryString) => {
+    return connection.query(`UPDATE posts SET description=$1 WHERE id=$2 and author_id=$3`, queryString)
+}
 
 export const postsRepository = {
     getFriendsPosts,
     getUserPosts,
-    getHashtagPosts
+    getHashtagPosts,
+    getPostId,
+    editPost,
 };

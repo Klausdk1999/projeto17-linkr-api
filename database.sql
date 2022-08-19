@@ -23,21 +23,9 @@ CREATE TABLE hashtags (
   last_use TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
--- CREATE TABLE hashtags_posts (
---    id SERIAL PRIMARY KEY,
---    hashtag_id INTEGER NOT NULL REFERENCES hashtags(id),
---    post_id INTEGER NOT NULL REFERENCES posts(id)
--- );
-
 CREATE TABLE hashtags_posts (
    id SERIAL PRIMARY KEY,
    hashtag_name VARCHAR(255) NOT NULL REFERENCES hashtags(name),
-   post_id INTEGER NOT NULL REFERENCES posts(id)
-);
-
-CREATE TABLE previews_posts (
-   id SERIAL PRIMARY KEY,
-   preview_id INTEGER NOT NULL REFERENCES previews(id),
    post_id INTEGER NOT NULL REFERENCES posts(id)
 );
 
@@ -49,6 +37,14 @@ CREATE TABLE previews(
    favicon TEXT NOT NULL
 );
 
+
+CREATE TABLE previews_posts (
+   id SERIAL PRIMARY KEY,
+   preview_id INTEGER NOT NULL REFERENCES previews(id),
+   post_id INTEGER NOT NULL REFERENCES posts(id)
+);
+
+
 CREATE TABLE likes (
    id SERIAL PRIMARY KEY,
    liker_id INTEGER NOT NULL REFERENCES users(id),
@@ -59,6 +55,21 @@ CREATE TABLE follows (
    id SERIAL PRIMARY KEY,
    follower_id INTEGER NOT NULL REFERENCES users(id),
    followed_id INTEGER NOT NULL REFERENCES users(id)
+);
+
+CREATE TABLE comments(
+    id SERIAL NOT NULL PRIMARY KEY,
+    comment TEXT NOT NULL,
+    post_id INTEGER NOT NULL REFERENCES posts(id),
+    commenter_id INTEGER NOT NULL REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE reposts_posts(
+   id SERIAL NOT NULL PRIMARY KEY,
+   post_id INTEGER NOT NULL REFERENCES posts(id),
+   user_id INTEGER NOT NULL REFERENCES users(id),
+   created_at TIMESTAMP DEFAULT NOW()
 );
 
 INSERT INTO users (username,email,password,picture_url) VALUES ('klausdk','klaus@email.com','123','https://i.pinimg.com/originals/17/a2/90/17a29000550b2d5fbe40efb58b2c8459.png'); 
