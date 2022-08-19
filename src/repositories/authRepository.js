@@ -21,7 +21,10 @@ async function findUser(user){
 
 }
 
+
+
+
 export const authRepository = {
     registerUser,
-    findUser
+    findUser,
 }
